@@ -25,11 +25,12 @@ Private pModelo As cModeloDisyuntivo
 '*
 Public Sub implementarSolucion()
     Modelo.implementarBitVector Solucion.BitVector
+    mImplementarBitVector Solucion.BitVector ' para que carga vecinos -> vectores
 End Sub
 
 Public Sub implementarMejorSolucion()
     Modelo.implementarBitVector MejorSolucion.BitVector
-    Modelo.actualizar
+    mImplementarBitVector Solucion.BitVector ' para que carga vecinos -> vectores
 End Sub
 '*
 '*

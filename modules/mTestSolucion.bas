@@ -2,28 +2,67 @@ Attribute VB_Name = "mTestSolucion"
 Option Explicit
 Option Base 1
 
+' ojo que
+' en los vectores, el recorrido va del ultimo hasta el primero
 
-' NOT tested
-' va del primero al ultimo, y no del ultimo al primero!!!
+
+Private Sub test()
+    init
+    ReDim c(cantOperaciones) As Integer
+    Dim testrec As New cRecorrido
+    Set testrec = _
+        Modelo.FabricaDeRecorridos.RecorridoCritico.dameColaSuperior(Modelo.FabricaDeRecorridos.RecorridoCritico.Recorrido(1))
+    
+    Dim i As Integer
+    ' el vector va del ultimo al primero
+    For i = testrec.Recorrido.count To 1 Step -1
+        c(testrec.Recorrido.count + 1 - i) = testrec.Recorrido(i).indice
+    Next
+
+
+
+'    Debug.Print Modelo.FabricaDeRecorridos.hayMasSubRecorridos(Modelo.FabricaDeRecorridos.RecorridoCritico)
+
+'    busquedaLocal.start 1
+'    Metaheuristica.implementarSolucion
+'    Modelo.actualizar
+
+    End
+End Sub
+
 Private Function hayMasSubRecorridos(c() As Integer) As Boolean
     hayMasSubRecorridos = True
     If damePosiblesPrecedores(c())(1) = 0 Then hayMasSubRecorridos = False
 End Function
 
-' NOT tested
+Public Function dameIndiceUltimoLugarNoZero(c() As Integer) As Integer
+    Dim i As Integer
+    For i = 1 To UBound(c, 1)
+        If c(i) = 0 Then
+            dameIndiceUltimoLugarNoZero = i - 1
+            Exit Function
+        End If
+    Next i
+End Function
+
 Private Function damePosiblesPrecedores(c() As Integer) As Integer()
-    Dim pp(cantOperaciones) As Integer
+    ReDim pp(cantOperaciones) As Integer
     
     Dim indicePrimeraOperacionDelRecorrido As Integer
-    indicePrimeraOperacionDelRecorrido = c(UBound(c, 1))
+    indicePrimeraOperacionDelRecorrido = c(dameIndiceUltimoLugarNoZero(c))
        
     Dim i As Integer
     For i = 1 To cantOperaciones
-        If operacionPrecedores(indicePrimeraOperacionDelRecorrido, 1) = 0 Then
+        If operacionPrecedores(indicePrimeraOperacionDelRecorrido, i) = 0 Then
             Exit For
         End If
+
+        pp = vectorReemplazoPrimerCero(operacionPrecedores(indicePrimeraOperacionDelRecorrido, i), pp)
         
-        
+    Next i
+            
+    damePosiblesPrecedores = pp
+            
 End Function
 ''*
 ''*

@@ -250,7 +250,7 @@ End Function
 '*
 '*
 '*
-Private Function hayMasPosiblesRecorridos(recs As Collection) As Boolean
+Public Function hayMasPosiblesRecorridos(recs As Collection) As Boolean
 
     Dim r As cRecorrido
     For Each r In recs
@@ -273,7 +273,7 @@ End Function
 ' voy a la primera operacion en el camino, y agrego las operaciones que estan antes de esta
 ' devuelvo los nuevos caminos que tienen una operacion mas, si llegue al inicio y no hay operacion
 ' anterior, devuelvo el camino con cual llamamos a la funcion que va ser uno solo
-Private Function obtenerSubRecorridos(r As cRecorrido) As Collection
+Public Function obtenerSubRecorridos(r As cRecorrido) As Collection
     Dim col As New Collection
     Dim r2 As cRecorrido
     Dim o As cOperacion
@@ -332,7 +332,7 @@ End Function
 '*
 '*
 '*
-Private Function hayMasSubRecorridos(c As cRecorrido) As Boolean
+Public Function hayMasSubRecorridos(c As cRecorrido) As Boolean
     
     If c.primerOperacionDelRecorrido.posiblesPrecedores.count > 0 Then
         hayMasSubRecorridos = True
