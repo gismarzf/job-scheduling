@@ -127,6 +127,19 @@ Public Function vectorReemplazoPrimerCero(i As Integer, v() As Integer) As Integ
     
 End Function
 
+Public Function matrizReemplazoPrimerCero(i As Integer, v() As Integer, indice As Integer) As Integer()
+    
+    Dim k As Integer
+    For k = 1 To UBound(v, 1)
+        If v(indice, k) = 0 Then
+            v(indice, k) = i
+            matrizReemplazoPrimerCero = v
+            Exit Function
+        End If
+    Next k
+    
+End Function
+
 Public Function vectorContieneInteger(i As Integer, v() As Integer) As Boolean
     Dim k As Integer
     For k = 1 To UBound(v, 1)
