@@ -20,13 +20,6 @@ Private Sub test()
     Next
 
 
-
-'    Debug.Print Modelo.FabricaDeRecorridos.hayMasSubRecorridos(Modelo.FabricaDeRecorridos.RecorridoCritico)
-
-'    busquedaLocal.start 1
-'    Metaheuristica.implementarSolucion
-'    Modelo.actualizar
-
     End
 End Sub
 
@@ -64,16 +57,6 @@ Private Function damePosiblesPrecedores(c() As Integer) As Integer()
     damePosiblesPrecedores = pp
             
 End Function
-''*
-''*
-''*
-'Private Function hayMasSubRecorridos(c As cRecorrido) As Boolean
-'
-'    If c.primerOperacionDelRecorrido.posiblesPrecedores.count > 0 Then
-'        hayMasSubRecorridos = True
-'    End If
-'
-'End Function
 
 '' voy a la primera operacion en el camino, y agrego las operaciones que estan antes de esta
 '' devuelvo los nuevos caminos que tienen una operacion mas, si llegue al inicio y no hay operacion

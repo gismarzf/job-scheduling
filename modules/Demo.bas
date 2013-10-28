@@ -6,13 +6,13 @@ Public MaxListaTabu As Integer, maxListaTabuInicial As Integer
 Public start As Long, finish As Long
 Public Declare Function GetTickCount Lib "kernel32" () As Long
 
-Private Modelo As New cModeloDisyuntivo
-Private Metaheuristica As New cMetaheuristica
-Private SolucionesIniciales As New cFabricaDeSolucionesIniciales
-Private busquedaLocal As New cBusquedaLocal
-Private stepArcosMaquina As Integer
-Private pausa As Boolean
-Private countHastaDiv As Integer
+Public Modelo As New cModeloDisyuntivo
+Public Metaheuristica As New cMetaheuristica
+Public SolucionesIniciales As New cFabricaDeSolucionesIniciales
+Public busquedaLocal As New cBusquedaLocal
+Public stepArcosMaquina As Integer
+Public pausa As Boolean
+Public countHastaDiv As Integer
 
 Public Sub getTimeElapsed()
         Worksheets("DEMO").Range("TICK").Cells(1, 1).Value = (GetTickCount() - _
