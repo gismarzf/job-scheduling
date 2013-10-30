@@ -30,7 +30,7 @@ Public Function dameRecorridosQueContienenOperacion(o As cOperacion) As Collecti
     Dim recQueContienen As New Collection
     
     For Each rec In recorridos
-        If coleccionContieneObjeto(o, rec.Recorrido) Then recQueContienen.Add rec
+        If coleccionContieneObjeto(o, rec.recorrido) Then recQueContienen.Add rec
     Next
     
     Set dameRecorridosQueContienenOperacion = recQueContienen
@@ -212,7 +212,7 @@ Public Function obtenerTodosRecorridosHasta(o As cOperacion)
     Set r = New cRecorrido
     
     ' agregar el punto de inicio
-    r.Recorrido.Add o
+    r.recorrido.Add o
     recorridosIncompletos.Add r
     
     '********************************************************************************
@@ -302,14 +302,14 @@ Public Function pegaDosSubRecorridos(primerRecorrido As cRecorrido, segundoRecor
         recorridoPegado.Arcos.Add primerRecorrido.Arcos(i)
     Next i
     
-    For i = 1 To primerRecorrido.Recorrido.count
-        recorridoPegado.Recorrido.Add primerRecorrido.Recorrido(i)
+    For i = 1 To primerRecorrido.recorrido.count
+        recorridoPegado.recorrido.Add primerRecorrido.recorrido(i)
     Next i
     
     ' necesito el arco entre el final del primer recorrido y el inicio del segundo
     Dim a As cArco
-    i = primerRecorrido.Recorrido.count
-    Set a = Modelo.dameArcoEntreOperaciones(primerRecorrido.Recorrido(i), segundoRecorrido.Recorrido(1))
+    i = primerRecorrido.recorrido.count
+    Set a = Modelo.dameArcoEntreOperaciones(primerRecorrido.recorrido(i), segundoRecorrido.recorrido(1))
     recorridoPegado.Arcos.Add a
                                         
     
@@ -318,8 +318,8 @@ Public Function pegaDosSubRecorridos(primerRecorrido As cRecorrido, segundoRecor
         recorridoPegado.Arcos.Add segundoRecorrido.Arcos(i)
     Next i
         
-    For i = 1 To segundoRecorrido.Recorrido.count
-        recorridoPegado.Recorrido.Add segundoRecorrido.Recorrido(i)
+    For i = 1 To segundoRecorrido.recorrido.count
+        recorridoPegado.recorrido.Add segundoRecorrido.recorrido(i)
     Next i
 
     

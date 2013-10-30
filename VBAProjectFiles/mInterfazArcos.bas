@@ -7,6 +7,8 @@ Public operacionPrecedores() As Integer
 Public operacionPeso() As Integer
 Public arcosBit() As Boolean
 Public cantOperaciones As Integer
+Public cantTrabajos As Integer
+Public cantOpxTrabajo As Integer
 
 Private arcosCInicioOperacion() As Integer
 Private arcosCFinalOperacion() As Integer
@@ -16,6 +18,8 @@ Private arcosDFinalOperacion() As Integer
 '********************************************************************************
 Public Sub mInitInterfazArcos(m As cModeloDisyuntivo)
     cantOperaciones = m.Operaciones.count
+    cantTrabajos = m.Trabajos.count
+    cantOpxTrabajo = m.cantOperacionesPorTrabajo
     
     ReDim arcosBit(m.ArcosDisyuntivos.count)
 

@@ -15,7 +15,7 @@ Private pRecorrido As Collection
 Private pArcos As Collection
 
 Private Sub Class_Initialize()
-    Set Recorrido = New Collection
+    Set recorrido = New Collection
     Set Arcos = New Collection
 End Sub
 
@@ -39,11 +39,11 @@ Property Let Suma(i As Integer)
     pSuma = i
 End Property
 
-Property Get Recorrido() As Collection
-    Set Recorrido = pRecorrido
+Property Get recorrido() As Collection
+    Set recorrido = pRecorrido
 End Property
 
-Property Set Recorrido(c As Collection)
+Property Set recorrido(c As Collection)
     Set pRecorrido = c
 End Property
 
@@ -54,15 +54,15 @@ End Property
 Public Sub agregarOperacionAntesDeTodos(o As cOperacion)
     
     ' agregar la operacion como primer operacion en la cola
-    Recorrido.Add o, , 1
+    recorrido.Add o, , 1
     
     ' agregamos el arco que esta entre la primera y segunda operacion, tambien asi
-    agregarArcoAntesDeTodos o, Recorrido(2)
+    agregarArcoAntesDeTodos o, recorrido(2)
     
 End Sub
 
 Public Function primerOperacionDelRecorrido() As cOperacion
-    Set primerOperacionDelRecorrido = Recorrido(1)
+    Set primerOperacionDelRecorrido = recorrido(1)
 End Function
 
 Public Sub agregarArcoAntesDeTodos(operacion1 As cOperacion, operacion2 As cOperacion)
@@ -88,8 +88,8 @@ Public Function copiarRecorrido() As cRecorrido
     c.Suma = Suma
     
     Dim o As cOperacion
-    For Each o In Recorrido
-        c.Recorrido.Add o
+    For Each o In recorrido
+        c.recorrido.Add o
     Next
         
     Dim a As cArco
@@ -106,7 +106,7 @@ Public Function sumarPesos() As Integer
      Dim temp As Integer
     
     Dim o As cOperacion
-    For Each o In Recorrido
+    For Each o In recorrido
         temp = temp + o.Duracion
     Next
     
@@ -119,9 +119,9 @@ Public Function dameColaInferior(o As cOperacion) As cRecorrido
     Dim a As cArco
         
     If dameIndiceDeOperacion(o) = 1 Then
-        rnew.Recorrido.Add o
+        rnew.recorrido.Add o
         Set dameColaInferior = rnew
-    ElseIf dameIndiceDeOperacion(o) = Recorrido.count Then
+    ElseIf dameIndiceDeOperacion(o) = recorrido.count Then
         Set rnew = Me
     Else
         Set a = dameProximoArco(o)
@@ -136,10 +136,10 @@ Public Function dameColaInferior(o As cOperacion) As cRecorrido
         Next i
         
         For i = 1 To rnew.Arcos.count
-            rnew.Recorrido.Add Arcos(i).InicioOperacion
+            rnew.recorrido.Add Arcos(i).InicioOperacion
             
             ' el ultimo arco debe tener la ultima operacion
-            If i = rnew.Arcos.count Then rnew.Recorrido.Add Arcos(i).FinalOperacion
+            If i = rnew.Arcos.count Then rnew.recorrido.Add Arcos(i).FinalOperacion
         Next i
     End If
     
@@ -155,8 +155,8 @@ Public Function dameColaSuperior(o As cOperacion) As cRecorrido
     Dim i As Integer
     
     ' si el indice es la ultima operacion, devuelvo todo el recorrido original
-    If dameIndiceDeOperacion(o) = Recorrido.count Then
-        rnew.Recorrido.Add o
+    If dameIndiceDeOperacion(o) = recorrido.count Then
+        rnew.recorrido.Add o
         Set dameColaSuperior = Me
         
     ElseIf dameIndiceDeOperacion(o) = 1 Then
@@ -173,12 +173,12 @@ Public Function dameColaSuperior(o As cOperacion) As cRecorrido
                 rnew.Arcos.Add Arcos(i)
             Else
                 rnew.Arcos.Add Arcos(i)
-                rnew.Recorrido.Add Arcos(i).InicioOperacion
+                rnew.recorrido.Add Arcos(i).InicioOperacion
             End If
         Next i
             
         For i = 1 To rnew.Arcos.count
-            rnew.Recorrido.Add rnew.Arcos(i).FinalOperacion
+            rnew.recorrido.Add rnew.Arcos(i).FinalOperacion
         Next i
         
     End If
@@ -199,8 +199,8 @@ Public Function dameIndiceDeOperacion(o As cOperacion) As Integer
     
     ' buscar el indice del arco dado
     Dim i As Integer
-    For i = 1 To Recorrido.count
-        If Recorrido(i) Is o Then dameIndiceDeOperacion = i
+    For i = 1 To recorrido.count
+        If recorrido(i) Is o Then dameIndiceDeOperacion = i
     Next i
     
 End Function
@@ -209,9 +209,9 @@ Public Function mismoRecorrido(rec As cRecorrido) As Boolean
     Dim i As Integer
     mismoRecorrido = True
     
-    If rec.Recorrido.count = Recorrido.count Then
-        For i = 1 To Recorrido.count
-            If rec.Recorrido(i).indice <> Recorrido(i).indice Then mismoRecorrido = False
+    If rec.recorrido.count = recorrido.count Then
+        For i = 1 To recorrido.count
+            If rec.recorrido(i).indice <> recorrido(i).indice Then mismoRecorrido = False
         Next i
     Else
         mismoRecorrido = False

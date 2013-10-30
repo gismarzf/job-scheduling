@@ -316,7 +316,7 @@ End Sub
 Public Sub marcarRecorrido(rec As cRecorrido)
 
     Dim o As cOperacion
-    For Each o In rec.Recorrido
+    For Each o In rec.recorrido
         o.Circulo.miShape.marcar
         o.Circulo.miShape.mandarAlFrente
         o.Rectangulo.miShape.marcar
@@ -333,7 +333,7 @@ End Sub
 Public Sub marcarRemoverRecorridos(rec As cRecorrido)
     
     Dim o As cOperacion
-    For Each o In rec.Recorrido
+    For Each o In rec.recorrido
         o.Circulo.miShape.marcarRemover
         o.Rectangulo.miShape.marcarRemover
     Next
