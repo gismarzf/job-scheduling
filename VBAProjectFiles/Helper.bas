@@ -150,3 +150,26 @@ Public Function vectorContieneInteger(i As Integer, v() As Integer) As Boolean
     Next k
 End Function
 
+Public Function copiarVector(v() As Integer) As Integer()
+    Dim temp(UBound(v, 1)) As Integer
+    
+    Dim i As Integer
+    For i = 1 To UBound(v, 1)
+        temp(i) = v(i)
+    Next i
+    
+    copiarVector = temp
+End Function
+
+Public Function copiarMatriz(m() As Integer) As Integer()
+    ReDim temp(UBound(m, 1), UBound(m, 2)) As Integer
+    
+    Dim i As Integer, j As Integer
+    For i = 1 To UBound(m, 1)
+        For j = 1 To UBound(m, 2)
+            temp(i, j) = m(i, j)
+        Next j
+    Next i
+    
+    copiarMatriz = temp
+End Function

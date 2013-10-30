@@ -2,13 +2,16 @@ Attribute VB_Name = "mTestSolucion"
 Option Explicit
 Option Base 1
 
-Public recorridos() As Integer
+Public Const maxRecorridos As Integer = 256
+Public recorridosCompletos() As Integer
+Public recorridosIncompletos() As Integer
 
 ' ojo que
 ' en los vectores, el recorrido va del ultimo hasta el primero
-
-
 Private Sub atest()
+    Dim start As Long, finish As Long
+
+
     init
     ReDim c(cantOperaciones) As Integer
     Dim testrec As New cRecorrido
@@ -25,8 +28,151 @@ Private Sub atest()
     ReDim r2(cantOperaciones, cantOperaciones) As Integer
     r2 = obtenerSubRecorridos(c)
 
+    ReDim v(cantOperaciones) As Integer
+
+
+    ReDim recorridosCompletos(maxRecorridos, cantOperaciones) As Integer
+    ReDim recorridosIncompletos(maxRecorridos, cantOperaciones) As Integer
+
+    v = extraerVectorDeMatriz(r2, 1)
+
+    Dim ctest As New Collection
+    Dim vtest() As Long
+    Dim r1() As Integer
+    
+    r2 = reemplazarPrimerVectorZero(r2, v)
+    r1 = r2
+    
+    
+    r2 = juntarMatriz(r2, r1)
+    
+'    start = GetTickCount()
+'    Dim i As Long
+'    For i = 1 To 1000000
+'        ctest.Add i
+'    Next i
+'    Debug.Print GetTickCount() - start
+'
+'    start = GetTickCount()
+'    For i = 1 To 1000000
+'        ReDim vtest(i)
+'        vtest(i) = i
+'    Next i
+'    Debug.Print GetTickCount() - start
+
+
     End
 End Sub
+
+Public Function obtenerTodosRecorridosHasta(o As Integer)
+    
+    
+End Function
+
+Public Function juntarMatriz(m1() As Integer, m2() As Integer) As Integer()
+    
+    ReDim mjuntos(maxRecorridos, cantOperaciones) As Integer
+    ReDim v(cantOperaciones) As Integer
+    Dim i As Integer
+    For i = 1 To maxRecorridos
+        If m2(i, 1) = 0 Then
+            juntarMatriz = m1
+            Exit Function
+        End If
+        v = extraerVectorDeMatriz(m2, i)
+        
+        m1 = reemplazarPrimerVectorZero(m1, v)
+    Next i
+    
+End Function
+
+' reemplaza el primer vector que empieza con 0 de una matriz
+Public Function reemplazarPrimerVectorZero(mat() As Integer, v() As Integer) As Integer()
+    
+    Dim mtemp() As Integer
+    mtemp = copiarMatriz(mat)
+    
+    Dim i As Integer, j As Integer
+    For i = 1 To UBound(mat, 1)
+        If mat(i, 1) = 0 Then
+            For j = 1 To UBound(v, 1)
+                mat(i, j) = v(j)
+            Next j
+            reemplazarPrimerVectorZero = mat
+            Exit Function
+        End If
+    Next i
+    
+End Function
+
+Public Function extraerVectorDeMatriz(r() As Integer, ind As Integer) As Integer()
+    ReDim v(UBound(r, 2)) As Integer
+    
+    Dim i As Integer
+    For i = 1 To UBound(r, 2)
+        v(i) = r(ind, i)
+    Next i
+    
+    extraerVectorDeMatriz = v
+
+End Function
+
+' falta
+Public Function borrarVectorDeMatriz(m() As Integer, ind As Integer) As Integer()
+    
+End Function
+
+
+'' ojo que esto va del ultimo al primero
+'Public Function obtenerTodosRecorridosHasta(o As cOperacion)
+'
+'    Dim recorridosIncompletos As New Collection
+'    Dim subrecorridos As New Collection
+'    Dim recorridosCompletos As New Collection
+'    Set recorridosCompletos = New Collection
+'
+'    Dim r As cRecorrido
+'    Set r = New cRecorrido
+'
+'    ' agregar el punto de inicio
+'    r.Recorrido.Add o
+'    recorridosIncompletos.Add r
+'
+'    '********************************************************************************
+'    ' SUPER LENTO
+'    '********************************************************************************
+'    While hayMasPosiblesRecorridos(recorridosIncompletos)
+'
+'        Set subrecorridos = New Collection
+'
+'        ' tomo todos los recorridosIncompletos que tengo en la coleccion, voy a la primer operacion de la lista
+'        ' y agrego las operaciones que pueden estar antes de esa operacion
+'        For Each r In recorridosIncompletos
+'
+'                ' veo si puedo agregar mas operaciones al Recorrido este, si NO, no lo agrego a mi lista
+'                ' ya que esta completo, lo mando a otra lista (para recorridosIncompletos completos)
+'
+'                If hayMasSubRecorridos(r) Then
+'                    Set subrecorridos = sumarColecciones(subrecorridos, obtenerSubRecorridos(r))
+'                Else
+'                    recorridosCompletos.Add obtenerSubRecorridos(r).item(1)
+'
+'                End If
+'        Next
+'
+'        Set recorridosIncompletos = subrecorridos
+'
+'    Wend
+'
+'    ' esto para poder obtener agregar los ultimos recorridosIncompletos
+'    Set recorridosCompletos = sumarColecciones(recorridosCompletos, recorridosIncompletos)
+'
+'    Set obtenerTodosRecorridosHasta = recorridosCompletos
+'
+'End Function
+
+
+
 
 
 Public Function coleccionRecoridoEnVectorRecorrido(c As Collection) As Integer()
@@ -110,28 +256,6 @@ Private Function obtenerSubRecorridos(r() As Integer) As Integer()
     
 End Function
 
-'' voy a la primera operacion en el camino, y agrego las operaciones que estan antes de esta
-'' devuelvo los nuevos caminos que tienen una operacion mas, si llegue al inicio y no hay operacion
-'' anterior, devuelvo el camino con cual llamamos a la funcion que va ser uno solo
-'Private Function obtenerSubRecorridos(r As cRecorrido) As Collection
-'    Dim col As New Collection
-'    Dim r2 As cRecorrido
-'    Dim o As cOperacion
-'
-'    For Each o In r.primerOperacionDelRecorrido.posiblesPrecedores
-'        Set r2 = r.copiarRecorrido
-'        r2.agregarOperacionAntesDeTodos o
-'        col.Add r2
-'    Next
-'
-'    ' si no habia mas subRecorridos, agrego el Recorrido original para no perderlo
-'    If col.count = 0 Then col.Add r
-'
-'    Set obtenerSubRecorridos = col
-'End Function
-''*
-''*
-''*
 
 'Public Function testSolucion(bvector As Collection) As Integer
 '
@@ -182,65 +306,6 @@ End Function
 ''*
 ''*
 ''*
-'' ojo que esto va del ultimo al primero
-'Public Function obtenerTodosRecorridosHasta(o As cOperacion)
-'
-'    Dim recorridosIncompletos As New Collection
-'    Dim subrecorridos As New Collection
-'    Dim recorridosCompletos As New Collection
-'    Set recorridosCompletos = New Collection
-'
-'    Dim r As cRecorrido
-'    Set r = New cRecorrido
-'
-'    ' agregar el punto de inicio
-'    r.Recorrido.Add o
-'    recorridosIncompletos.Add r
-'
-'    '********************************************************************************
-'    ' SUPER LENTO
-'    '********************************************************************************
-'    While hayMasPosiblesRecorridos(recorridosIncompletos)
-'
-'        Set subrecorridos = New Collection
-'
-'        ' tomo todos los recorridosIncompletos que tengo en la coleccion, voy a la primer operacion de la lista
-'        ' y agrego las operaciones que pueden estar antes de esa operacion
-'        For Each r In recorridosIncompletos
-'
-'                ' veo si puedo agregar mas operaciones al Recorrido este, si NO, no lo agrego a mi lista
-'                ' ya que esta completo, lo mando a otra lista (para recorridosIncompletos completos)
-'
-'                If hayMasSubRecorridos(r) Then
-'                    Set subrecorridos = sumarColecciones(subrecorridos, obtenerSubRecorridos(r))
-'                Else
-'                    recorridosCompletos.Add obtenerSubRecorridos(r).item(1)
-'
-'                End If
-'        Next
-'
-'        Set recorridosIncompletos = subrecorridos
-'
-'    Wend
-'
-'    ' esto para poder obtener agregar los ultimos recorridosIncompletos
-'    Set recorridosCompletos = sumarColecciones(recorridosCompletos, recorridosIncompletos)
-'
-'    Set obtenerTodosRecorridosHasta = recorridosCompletos
-'
-'End Function
-''*
-''*
-''*
-'Private Function hayMasPosiblesRecorridos(recs As Collection) As Boolean
-'
-'    Dim r As cRecorrido
-'    For Each r In recs
-'        If r.primerOperacionDelRecorrido.posiblesPrecedores.count > 0 Then
-'            hayMasPosiblesRecorridos = True
-'            Exit Function ' salimos al primero, no hace falter iterar todos
-'        End If
-'    Next
-'
-'End Function
+
+
 
