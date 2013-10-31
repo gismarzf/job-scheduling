@@ -15,6 +15,8 @@ Private pEndY As Integer
 Private pTiempo As Integer
 Private pobjShape As Shape
 Private pobjText As Shape
+Private pPlanilla As Worksheet
+
 
 Private Sub Class_Terminate()
     Set pobjShape = Nothing
@@ -26,7 +28,8 @@ End Sub
 '********************************************************************************
 
 Public Sub crear()
-    Set Shape = Worksheets("DEMO").Shapes.AddConnector(msoConnectorStraight, StartX, StartY, EndX, _
+
+    Set Shape = Planilla.Shapes.AddConnector(msoConnectorStraight, StartX, StartY, EndX, _
         EndY)
     Shape.Reflection.Type = msoReflectionType1
     With Shape
@@ -41,8 +44,8 @@ Public Sub crear()
         .Line.Transparency = 0.6
     End With
     
-    Set Text = Worksheets("DEMO").Shapes.AddTextbox(msoTextOrientationHorizontal, StartX, 0, _
-        50, distanciaTop * 2)
+    Set Text = Planilla.Shapes.AddTextbox(msoTextOrientationHorizontal, StartX, 0, _
+        150, distanciaTop * 2)
     
     With Text
         .Fill.visible = msoFalse
@@ -56,6 +59,14 @@ End Sub
 '********************************************************************************
 'GETTERS/SETTERS
 '********************************************************************************
+
+Public Property Get Planilla() As Worksheet
+    Set Planilla = pPlanilla
+End Property
+
+Public Property Set Planilla(p As Worksheet)
+    Set pPlanilla = p
+End Property
 
 Public Property Get Text() As Shape
     Set Text = pobjText

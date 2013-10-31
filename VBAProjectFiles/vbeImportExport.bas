@@ -1,4 +1,4 @@
-Attribute VB_Name = "ImportExport"
+Attribute VB_Name = "vbeImportExport"
 Option Explicit
 
 Public Sub ExportModules()

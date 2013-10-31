@@ -87,7 +87,8 @@ Public Sub implementarBitVector(bvector As Collection)
 End Sub
 
 Public Function Errores(bvector As Collection) As Integer
-    Errores = mCalcularNumeroDeRelacionesCirculares(bvector)
+  '  Errores = mCalcularNumeroDeRelacionesCirculares(bvector)
+    Errores = relacionesCirculares
 End Function
 
 

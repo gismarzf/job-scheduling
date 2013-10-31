@@ -397,6 +397,7 @@ Public Sub crearLineasSeparacion()
         lineaSep.EndX = zeroXRectangulo + (i - 1) * spacing
         lineaSep.EndY = rbot.miShape.Shape.Top + heightRectangulo
         lineaSep.Tiempo = (i - 1) * (spacing / Factor_Gantt)
+        Set lineaSep.Planilla = PlanillaGraficoGantt
         lineaSep.crear
         pcolLineasSeparacion.Add lineaSep
     Next i
