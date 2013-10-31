@@ -39,6 +39,7 @@ End Sub
 
 Public Sub mImplementarBitVector(c As Collection)
     ReDim arcosBit(c.count)
+
     
     Dim i As Integer
     For i = 1 To c.count

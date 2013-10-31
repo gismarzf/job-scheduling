@@ -75,6 +75,23 @@ Public Sub init()
 
     setTimeElapsedZero
 
+    mImplementarBitVector Metaheuristica.Solucion.BitVector
+'
+'    start = GetTickCount()
+'    Dim i As Integer
+'    For i = 1 To 50
+'       Modelo.testSolucion Metaheuristica.Solucion.BitVector
+'    Next i
+'    Debug.Print GetTickCount() - start
+'
+    start = GetTickCount()
+    For i = 1 To 50
+           mCalcularFuncional
+    Next i
+    Debug.Print GetTickCount() - start
+
+    End
+    
 End Sub
 
 Sub startBusqueda()

@@ -5,36 +5,6 @@ Option Base 1
 Public Const maxRecorridos As Integer = 256
 Public recorridosCompletos() As Integer
 
-' ojo que
-' en los vectores, el recorrido va del ultimo hasta el primero
-Private Sub atest()
-    Dim start As Long, finish As Long
-
-    init
-    ReDim c(cantOperaciones) As Integer
-    Dim testrec As New cRecorrido
-    Set testrec = _
-    Modelo.FabricaDeRecorridos.RecorridoCritico.dameColaSuperior _
-                  (Modelo.FabricaDeRecorridos.RecorridoCritico.recorrido(6))
-
-
-    c = coleccionRecoridoEnVectorRecorrido(testrec.recorrido)
-
-    Dim testrec2 As New Collection
-    Set testrec2 = Modelo.FabricaDeRecorridos.obtenerSubRecorridos(testrec)
-
-
-
-    ReDim recorridosCompletos(maxRecorridos, cantOperaciones) As Integer
-    ReDim recorridosIncompletos(maxRecorridos, cantOperaciones) As Integer
-
-    obtenerTodosRecorridos
-    
-    mCalcularFuncional
-
-
-    End
-End Sub
 
 Public Function coleccionRecoridoEnVectorRecorrido(c As Collection) As Integer()
     ReDim r(cantOperaciones) As Integer
@@ -126,13 +96,13 @@ End Function
 Public Sub extraerRecorridosCompletos(r() As Integer)
 
     Dim i As Integer
-    For i = 1 To UBound(r, 1)
+    For i = 1 To maxRecorridos
         If r(i, 1) = 0 Then Exit Sub
         Dim v() As Integer
         v = extraerVectorDeMatriz(r, i)
         If Not hayMasSubRecorridos(v) Then
             r = eliminarVectorDeMatriz(r, i)
-            recorridosCompletos = reemplazarPrimerVectorZero(recorridosCompletos, v)
+            reemplazarPrimerVectorZero recorridosCompletos, v
             i = i - 1 ' tengo que hacer esto, ya que la matriz se achico
         End If
     Next i
@@ -140,10 +110,10 @@ Public Sub extraerRecorridosCompletos(r() As Integer)
 End Sub
 
 Public Function extraerVectorDeMatriz(r() As Integer, ind As Integer) As Integer()
-    ReDim v(UBound(r, 2)) As Integer
+    ReDim v(cantOperaciones) As Integer
 
     Dim i As Integer
-    For i = 1 To UBound(r, 2)
+    For i = 1 To cantOperaciones
         v(i) = r(ind, i)
     Next i
 
@@ -182,17 +152,24 @@ Public Function juntarMatriz(m1() As Integer, m2() As Integer) As Integer()
         End If
         v = extraerVectorDeMatriz(m2, i)
 
-        m1 = reemplazarPrimerVectorZero(m1, v)
+        reemplazarPrimerVectorZero m1, v
     Next i
 
 End Function
 
 Public Function mCalcularFuncional() As Integer
+
+    ReDim recorridosCompletos(maxRecorridos, cantOperaciones)
+
+    obtenerTodosRecorridos ' SUPER slow
+        
     Dim sum As Integer, maxsum As Integer
     maxsum = 0
 
-    Dim i As Integer, j As Integer
-    For i = 1 To contarHastaPrimerVectorZero(recorridosCompletos)
+    Dim j As Integer, i As Integer
+    For i = 1 To maxRecorridos
+        If recorridosCompletos(i, 1) = 0 Then Exit For
+        
         sum = 0
         For j = 1 To cantOperaciones
             If recorridosCompletos(i, j) = 0 Then Exit For
@@ -242,36 +219,7 @@ Private Function obtenerSubRecorridos(r() As Integer) As Integer()
 
 End Function
 
-'Public Function elegirRecorridoCritico(r As Collection) As cRecorrido
-'    Dim rcrit As cRecorrido
-'    Dim rtemp As cRecorrido
-'    Dim max As Integer
-'    max = 0
-'
-'    For Each rtemp In r
-'        rtemp.Suma = rtemp.sumarPesos
-'        If rtemp.Suma > max Then
-'            Set rcrit = rtemp
-'            max = rtemp.Suma
-'        End If
-'    Next
-'
-'    Set elegirRecorridoCritico = rcrit
-'
-'End Function
-''*
-''*
-''*
-'Public Function obtenerRecorridoCriticoHasta(o As cOperacion)
-'   Set obtenerRecorridoCriticoHasta = elegirRecorridoCritico(obtenerTodosRecorridosHasta(o))
-'End Function
-
-''*
-''*
-''*
-
 Public Function obtenerTodosRecorridos()
-    ReDim subrecorridos(maxRecorridos, cantOperaciones) As Integer
     ReDim recorridosIncompletos(maxRecorridos, cantOperaciones) As Integer
 
     'agregar las ultimas operaciones como ptos de partida1
@@ -283,15 +231,12 @@ Public Function obtenerTodosRecorridos()
     ' como sacamos cada vez un camino completo de la matriz de recorridos incompletos
     ' cuando no haya mas (primer indice zero) es pq obtuvimos todos
     While recorridosIncompletos(1, 1) <> 0
-        ReDim subrecorridos(maxRecorridos, cantOperaciones) As Integer
-        For i = 1 To contarHastaPrimerVectorZero(recorridosIncompletos)
-            ReDim recorrido(cantOperaciones) As Integer
+        Dim subrecorridos() As Integer
+        For i = 1 To maxRecorridos
+            If recorridosIncompletos(i, 1) = 0 Then Exit For
+            Dim recorrido() As Integer
             recorrido = extraerVectorDeMatriz(recorridosIncompletos, i)
             subrecorridos = juntarMatriz(subrecorridos, obtenerSubRecorridos(recorrido))
-            
-            ' borra el recorrido completo de la matriz subrecorridos y lo agrega a
-            ' recorridos completos
-            
         Next i
     
         extraerRecorridosCompletos subrecorridos
@@ -306,9 +251,9 @@ Public Function reemplazarPrimerVectorZero(mat() As Integer, v() As Integer) As 
     mtemp = copiarMatriz(mat)
 
     Dim i As Integer, j As Integer
-    For i = 1 To UBound(mat, 1)
+    For i = 1 To maxRecorridos
         If mat(i, 1) = 0 Then
-            For j = 1 To UBound(v, 1)
+            For j = 1 To cantOperaciones
                 mat(i, j) = v(j)
             Next j
             reemplazarPrimerVectorZero = mat
