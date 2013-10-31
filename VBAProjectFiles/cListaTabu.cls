@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "cBusquedaLocal"
+Attribute VB_Name = "cListaTabu"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -23,7 +23,7 @@ Public Sub elegirProximaSolucion()
     Dim min As Integer
     For Each tempSol In Metaheuristica.Vecindario
             indice = tempSol.IndiceDeDiferencia ' el indice del arco que fue cambiado en cada vecindario
-        If Not coleccionContieneInteger(indice, ListaTabu) Then
+        If Not coleccionContieneInteger(indice, listaTabu) Then
             min = tempSol.Funcional ' busco el minimo de todos los vecindarios que NO son tabu
             Exit For                ' (para comparar despues)
         End If
@@ -34,7 +34,7 @@ Public Sub elegirProximaSolucion()
         ' si el funcional es menor y no esta tabu, es la nueva solucion
         ' si es menor que TODOS los anteriores y si esta tabu, tambien
         If tempSol.Funcional <= min And Not coleccionContieneInteger(indice, _
-            ListaTabu) Or coleccionContieneInteger(indice, ListaTabu) And _
+            listaTabu) Or coleccionContieneInteger(indice, listaTabu) And _
             tempSol.Funcional < Metaheuristica.MejorSolucion.Funcional Then
             min = tempSol.Funcional
             Set Metaheuristica.Solucion = tempSol
@@ -109,7 +109,7 @@ Public Sub start(iteraciones As Integer)
     Dim i As Integer
     For i = 1 To iteraciones
         ' saco el primer indice de la lista tabu
-        If ListaTabu.count > MaxListaTabu Then ListaTabu.Remove (1)
+        If listaTabu.count > MaxListaTabu Then listaTabu.Remove (1)
         
         funcionalAnterior = Metaheuristica.Solucion.Funcional
         
@@ -128,13 +128,13 @@ Public Sub start(iteraciones As Integer)
                 Metaheuristica.Solucion.copiaDeEstaSolucion
         End If
         
-        ListaTabu.Add Metaheuristica.Solucion.IndiceDeDiferencia
+        listaTabu.Add Metaheuristica.Solucion.IndiceDeDiferencia
        
     Next i
     
 End Sub
 
-Property Set ListaTabu(c As Collection)
+Property Set listaTabu(c As Collection)
     Set pListaTabu = c
 End Property
 
@@ -146,8 +146,8 @@ Property Let MaxListaTabu(i As Integer)
     pMaxListaTabu = i
 End Property
 
-Property Get ListaTabu() As Collection
-    Set ListaTabu = pListaTabu
+Property Get listaTabu() As Collection
+    Set listaTabu = pListaTabu
 End Property
 
 '*

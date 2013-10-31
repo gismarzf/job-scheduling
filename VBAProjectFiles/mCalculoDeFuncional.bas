@@ -1,4 +1,4 @@
-Attribute VB_Name = "mTestSolucion"
+Attribute VB_Name = "mCalculoDeFuncional"
 Option Explicit
 Option Base 1
 

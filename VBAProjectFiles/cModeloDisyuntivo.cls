@@ -124,12 +124,12 @@ Public Function printOrden(c As Collection)
     
     Dim i As Integer
     For i = 1 To c.count
-       PlanillaDatos.Cells(30 + i, 2).Value = c(i).indice
-       PlanillaDatos.Cells(30 + i, 3).Value = c(i).Maquina.Numero
-       PlanillaDatos.Cells(30 + i, 4).Value = c(i).Trabajo.Numero
-       PlanillaDatos.Cells(30 + i, 5).Value = c(i).Duracion
+       planillaDatos.Cells(30 + i, 2).Value = c(i).indice
+       planillaDatos.Cells(30 + i, 3).Value = c(i).Maquina.Numero
+       planillaDatos.Cells(30 + i, 4).Value = c(i).Trabajo.Numero
+       planillaDatos.Cells(30 + i, 5).Value = c(i).Duracion
         
-       PlanillaDatos.Cells(30 + i, 6).Value = PlanillaDatos.Cells(30 + i - 1, 6).Value + c(i).Duracion
+       planillaDatos.Cells(30 + i, 6).Value = planillaDatos.Cells(30 + i - 1, 6).Value + c(i).Duracion
     Next i
     
 End Function
@@ -273,22 +273,22 @@ Public Sub actualizar()
     Diagrama.actualizarPlanilla
 End Sub
 
-Public Sub inicializar(PlanillaDatos As Worksheet, PlanillaGraficoDisyuntivo As Worksheet, _
+Public Sub inicializar(planillaDatos As Worksheet, PlanillaGraficoDisyuntivo As Worksheet, _
                                                     PlanillaGraficoGantt As Worksheet)
 
     Set Diagrama = New cDiagrama
     
-    Set Me.PlanillaDatos = PlanillaDatos
+    Set Me.planillaDatos = planillaDatos
     Set Me.PlanillaGraficoDisyuntivo = PlanillaGraficoDisyuntivo
     Set Me.PlanillaGraficoGantt = PlanillaGraficoGantt
     
     Set Diagrama.PlanillaGraficoDisyuntivo = Me.PlanillaGraficoDisyuntivo
     Set Diagrama.PlanillaGraficoGantt = Me.PlanillaGraficoGantt
     
-    cantTrabajos = PlanillaDatos.Range("TRABAJOS").Cells(1, 1).Value
-    cantMaquinas = PlanillaDatos.Range("MAQUINAS").Cells(1, 1).Value
-    cantOperacionesPorTrabajo = PlanillaDatos.Range("OPXTRABAJO").Cells(1, 1).Value
-    cantOperacionesPorMaquina = PlanillaDatos.Range("OPXMAQUINA").Cells(1, 1).Value
+    cantTrabajos = planillaDatos.Range("TRABAJOS").Cells(1, 1).Value
+    cantMaquinas = planillaDatos.Range("MAQUINAS").Cells(1, 1).Value
+    cantOperacionesPorTrabajo = planillaDatos.Range("OPXTRABAJO").Cells(1, 1).Value
+    cantOperacionesPorMaquina = planillaDatos.Range("OPXMAQUINA").Cells(1, 1).Value
     
     removerGraficos
     
@@ -432,10 +432,10 @@ Private Sub crearOperaciones()
         Dim j As Integer
         For j = 1 To cantOperacionesPorTrabajo
             Set o = New cOperacion
-            Set o.Trabajo = Trabajos(CStr(PlanillaDatos.Range("DATOS").Cells(k, 2).Value))
-            Set o.Maquina = Maquinas(CStr(PlanillaDatos.Range("DATOS").Cells(k, 3).Value))
+            Set o.Trabajo = Trabajos(CStr(planillaDatos.Range("DATOS").Cells(k, 2).Value))
+            Set o.Maquina = Maquinas(CStr(planillaDatos.Range("DATOS").Cells(k, 3).Value))
 
-            o.Duracion = PlanillaDatos.Range("DATOS").Cells(k, 4).Value
+            o.Duracion = planillaDatos.Range("DATOS").Cells(k, 4).Value
             o.OrdenEnElTrabajo = j
             o.indice = k
             Operaciones.Add o, CStr(k)
@@ -584,11 +584,11 @@ Property Set Operaciones(c As Collection)
     Set pOperaciones = c
 End Property
 
-Property Get PlanillaDatos() As Worksheet
-    Set PlanillaDatos = pPlanillaDatos
+Property Get planillaDatos() As Worksheet
+    Set planillaDatos = pPlanillaDatos
 End Property
 
-Property Set PlanillaDatos(w As Worksheet)
+Property Set planillaDatos(w As Worksheet)
     Set pPlanillaDatos = w
 End Property
 

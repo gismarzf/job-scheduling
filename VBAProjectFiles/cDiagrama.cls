@@ -305,11 +305,11 @@ Public Sub actualizarPlanilla()
 
     Dim i As Integer
     For i = 1 To Modelo.Operaciones.count
-        Modelo.PlanillaDatos.Range("DATOS").Cells(i, 5).Value = Modelo.Operaciones(i).HorarioInicio
-        Modelo.PlanillaDatos.Range("DATOS").Cells(i, 6).Value = Modelo.Operaciones(i).HorarioFin
+        Modelo.planillaDatos.Range("DATOS").Cells(i, 5).Value = Modelo.Operaciones(i).HorarioInicio
+        Modelo.planillaDatos.Range("DATOS").Cells(i, 6).Value = Modelo.Operaciones(i).HorarioFin
     Next i
     
-    Modelo.PlanillaDatos.Range("FUNCIONAL").Cells(1, 1).Value = _
+    Modelo.planillaDatos.Range("FUNCIONAL").Cells(1, 1).Value = _
                     Modelo.FabricaDeRecorridos.RecorridoCritico.Suma
 End Sub
 

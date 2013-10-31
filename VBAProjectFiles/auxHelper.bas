@@ -1,4 +1,4 @@
-Attribute VB_Name = "Helper"
+Attribute VB_Name = "auxHelper"
 Option Explicit
 Option Base 1
 
@@ -43,22 +43,26 @@ Public MaxListaTabu As Integer, maxListaTabuInicial As Integer ' segundo es para
 Public separacionHorizontalCirculos As Integer, zeroXRectangulo As Integer
 Public Factor_Gantt As Double
 
+Public Modelo As New cModeloDisyuntivo
+Public Metaheuristica As New cMetaheuristica
+Public SolucionesIniciales As New cFabricaDeSolucionesIniciales
+Public listaTabu As New cListaTabu
+Public stepArcosMaquina As Integer
+Public pausa As Boolean
+Public countHastaDiv As Integer
+
+
 '********************************************************************************
 'FUNCIONES
 '********************************************************************************
 
-Public Function coleccionContieneObjeto(item As Variant, c As Collection)
-    
-    If c Is Nothing Then
-        coleccionContieneObjeto = False
-    Else
-        Dim v As Variant
-        For Each v In c
-            If item Is v Then coleccionContieneObjeto = True
-        Next
-    End If
-    
-End Function
+' supongo que es mas rapido ya que no crea una nueva coleccion
+Public Sub agregarColeccion(c1 As Collection, c2 As Collection)
+    Dim v As Variant
+    For Each v In c2
+        c1.Add v
+    Next
+End Sub
 
 Public Function coleccionContieneInteger(valor As Integer, c As Collection) As Boolean
     
@@ -73,13 +77,74 @@ Public Function coleccionContieneInteger(valor As Integer, c As Collection) As B
 
 End Function
 
-' supongo que es mas rapido ya que no crea una nueva coleccion
-Public Sub agregarColeccion(c1 As Collection, c2 As Collection)
-    Dim v As Variant
-    For Each v In c2
-        c1.Add v
-    Next
+Public Function coleccionContieneObjeto(item As Variant, c As Collection)
+    
+    If c Is Nothing Then
+        coleccionContieneObjeto = False
+    Else
+        Dim v As Variant
+        For Each v In c
+            If item Is v Then coleccionContieneObjeto = True
+        Next
+    End If
+    
+End Function
+
+Public Function copiarMatriz(m() As Integer) As Integer()
+    ReDim temp(UBound(m, 1), UBound(m, 2)) As Integer
+    
+    Dim i As Integer, j As Integer
+    For i = 1 To UBound(m, 1)
+        For j = 1 To UBound(m, 2)
+            temp(i, j) = m(i, j)
+        Next j
+    Next i
+    
+    copiarMatriz = temp
+End Function
+
+Public Function copiarVector(v() As Integer) As Integer()
+    Dim temp(UBound(v, 1)) As Integer
+    
+    Dim i As Integer
+    For i = 1 To UBound(v, 1)
+        temp(i) = v(i)
+    Next i
+    
+    copiarVector = temp
+End Function
+
+Public Sub getTimeElapsed()
+        Worksheets("DEMO").Range("TICK").Cells(1, 1).Value = (GetTickCount() - _
+            start) / 1000
 End Sub
+
+Public Function matrizReemplazoPrimerCero(i As Integer, v() As Integer, indice As Integer) As Integer()
+    
+    Dim k As Integer
+    For k = 1 To UBound(v, 1)
+        If v(indice, k) = 0 Then
+            v(indice, k) = i
+            matrizReemplazoPrimerCero = v
+            Exit Function
+        End If
+    Next k
+    
+End Function
+
+Public Function performanceOff()
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.EnableEvents = True
+
+End Function
+
+Public Function performanceOn()
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.EnableEvents = False
+    
+End Function
 
 Public Function sumarColecciones(c1 As Collection, c2 As Collection) As Collection
         
@@ -100,18 +165,14 @@ Public Function sumarColecciones(c1 As Collection, c2 As Collection) As Collecti
 
 End Function
 
-Public Function performanceOn()
-    Application.Calculation = xlCalculationManual
-    Application.ScreenUpdating = False
-    Application.EnableEvents = False
-    
-End Function
-
-Public Function performanceOff()
-    Application.Calculation = xlCalculationAutomatic
-    Application.ScreenUpdating = True
-    Application.EnableEvents = True
-
+Public Function vectorContieneInteger(i As Integer, v() As Integer) As Boolean
+    Dim k As Integer
+    For k = 1 To UBound(v, 1)
+        If v(k) = i Then
+            vectorContieneInteger = True
+            Exit Function
+        End If
+    Next k
 End Function
 
 Public Function vectorReemplazoPrimerCero(i As Integer, v() As Integer) As Integer()
@@ -127,49 +188,3 @@ Public Function vectorReemplazoPrimerCero(i As Integer, v() As Integer) As Integ
     
 End Function
 
-Public Function matrizReemplazoPrimerCero(i As Integer, v() As Integer, indice As Integer) As Integer()
-    
-    Dim k As Integer
-    For k = 1 To UBound(v, 1)
-        If v(indice, k) = 0 Then
-            v(indice, k) = i
-            matrizReemplazoPrimerCero = v
-            Exit Function
-        End If
-    Next k
-    
-End Function
-
-Public Function vectorContieneInteger(i As Integer, v() As Integer) As Boolean
-    Dim k As Integer
-    For k = 1 To UBound(v, 1)
-        If v(k) = i Then
-            vectorContieneInteger = True
-            Exit Function
-        End If
-    Next k
-End Function
-
-Public Function copiarVector(v() As Integer) As Integer()
-    Dim temp(UBound(v, 1)) As Integer
-    
-    Dim i As Integer
-    For i = 1 To UBound(v, 1)
-        temp(i) = v(i)
-    Next i
-    
-    copiarVector = temp
-End Function
-
-Public Function copiarMatriz(m() As Integer) As Integer()
-    ReDim temp(UBound(m, 1), UBound(m, 2)) As Integer
-    
-    Dim i As Integer, j As Integer
-    For i = 1 To UBound(m, 1)
-        For j = 1 To UBound(m, 2)
-            temp(i, j) = m(i, j)
-        Next j
-    Next i
-    
-    copiarMatriz = temp
-End Function

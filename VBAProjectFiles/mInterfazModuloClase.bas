@@ -1,6 +1,10 @@
-Attribute VB_Name = "mInterfazArcos"
+Attribute VB_Name = "mInterfazModuloClase"
 Option Explicit
 Option Base 1
+
+'********************************************************************************
+'VARIABLES
+'********************************************************************************
 
 Public operacionSucedores() As Integer
 Public operacionPrecedores() As Integer
@@ -16,6 +20,9 @@ Private arcosDInicioOperacion() As Integer
 Private arcosDFinalOperacion() As Integer
 
 '********************************************************************************
+'FUNCIONES
+'********************************************************************************
+
 Public Sub mInitInterfazArcos(m As cModeloDisyuntivo)
     cantOperaciones = m.Operaciones.count
     cantTrabajos = m.Trabajos.count
@@ -49,8 +56,6 @@ Public Sub mImplementarBitVector(c As Collection)
     cargarVecinos
 
 End Sub
-
-'********************************************************************************
 
 Private Sub initArcosDisyuntivos(c As Collection, max As Integer)
     ReDim arcosDInicioOperacion(max)

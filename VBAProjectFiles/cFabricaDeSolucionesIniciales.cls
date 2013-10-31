@@ -60,7 +60,7 @@ Public Function porListaTabu(longitud As Integer) As cSolucion
     ' es medio sucio, teoricamente podria quedarme en un local minimo y nunca llegar
     ' pero como hay muchas configuraciones que me den 0 errores, soy optimista
     
-    Set ListaTabu = New Collection
+    Set listaTabu = New Collection
     Dim count As Integer
     count = 0
     
@@ -68,8 +68,8 @@ Public Function porListaTabu(longitud As Integer) As cSolucion
     
         Set Vecindario = New Collection
         
-        If ListaTabu.count > MaxListaTabu Then
-            ListaTabu.Remove 1
+        If listaTabu.count > MaxListaTabu Then
+            listaTabu.Remove 1
         End If
         
         Dim s As New cSolucion
@@ -78,7 +78,7 @@ Public Function porListaTabu(longitud As Integer) As cSolucion
         Dim i As Integer
         i = Int((s.BitVector.count - 1 + 1) * Rnd + 1)
         
-        While coleccionContieneInteger(i, ListaTabu)
+        While coleccionContieneInteger(i, listaTabu)
             i = Int((s.BitVector.count - 1 + 1) * Rnd + 1)
         Wend
         
@@ -88,7 +88,7 @@ Public Function porListaTabu(longitud As Integer) As cSolucion
         
         If s.Errores <= Solucion.Errores Then
             Set Solucion = s.copiaDeEstaSolucion
-            ListaTabu.Add i
+            listaTabu.Add i
         End If
         count = count + 1
         
@@ -124,11 +124,11 @@ Property Set Solucion(s As cSolucion)
     Set pSolucion = s
 End Property
 
-Property Get ListaTabu() As Collection
-    Set ListaTabu = pListaTabu
+Property Get listaTabu() As Collection
+    Set listaTabu = pListaTabu
 End Property
 
-Property Set ListaTabu(c As Collection)
+Property Set listaTabu(c As Collection)
     Set pListaTabu = c
 End Property
 

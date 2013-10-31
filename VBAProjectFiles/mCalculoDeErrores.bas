@@ -1,4 +1,4 @@
-Attribute VB_Name = "mRelacionesCirculares"
+Attribute VB_Name = "mCalculoDeErrores"
 Option Explicit
 Option Base 1
 
